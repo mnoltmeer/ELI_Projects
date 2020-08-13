@@ -4,9 +4,8 @@
 #pragma hdrstop
 #pragma argsused
 
-#include "..\MyFunc\MyFunc.h"
-
-#include "eli_interface.h"
+#include "..\..\work-functions\MyFunc.h"
+#include "..\..\ELI\eli_interface.h"
 
 extern "C"
 {

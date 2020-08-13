@@ -56,8 +56,8 @@
         <Multithreaded>true</Multithreaded>
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <IncludePath>..\..\MyFunc\;..\;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>..\..\MyFunc\;..\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>..\..\work-functions\;..\..\ELI\;..\..\MyFunc\;..\;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>..\..\work-functions\;..\..\ELI\;..\..\MyFunc\;..\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>eliSomeFuncs</SanitizedProjectName>
         <VerInfo_Locale>1058</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -111,7 +111,7 @@
         <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="..\eli_interface.h">
+        <None Include="..\..\ELI\eli_interface.h">
             <BuildOrder>3</BuildOrder>
         </None>
         <PCHCompile Include="eliSomeFuncsPCH1.h">
@@ -121,9 +121,9 @@
         <CppCompile Include="Main.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\..\MyFunc\MyFunc.cpp">
-            <DependentOn>..\..\MyFunc\MyFunc.h</DependentOn>
-            <BuildOrder>4</BuildOrder>
+        <CppCompile Include="..\..\work-functions\MyFunc.cpp">
+            <DependentOn>..\..\work-functions\MyFunc.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
         </CppCompile>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
