@@ -5,7 +5,6 @@
 #pragma argsused
 
 #include "..\..\work-functions\MyFunc.h"
-
 #include "..\..\ELI\eli_interface.h"
 
 String initdir;
