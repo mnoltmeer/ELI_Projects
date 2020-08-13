@@ -4,9 +4,9 @@
 #pragma hdrstop
 #pragma argsused
 
-#include "..\MyFunc\MyFunc.h"
+#include "..\..\work-functions\MyFunc.h"
 
-#include "eli_interface.h"
+#include "..\..\ELI\eli_interface.h"
 
 String initdir;
 
