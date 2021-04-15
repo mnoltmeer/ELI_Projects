@@ -56,8 +56,8 @@
         <Multithreaded>true</Multithreaded>
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <IncludePath>..\..\work-functions\;..\..\ELI\;..\..\MyFunc\;..\;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>..\..\work-functions\;..\..\ELI\;..\..\MyFunc\;..\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>..\..\work-functions\;..\..\ELI\;..\;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>..\..\work-functions\;..\..\ELI\;..\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>eliSomeFuncs</SanitizedProjectName>
         <VerInfo_Locale>1058</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -109,6 +109,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
         <Manifest_File>(None)</Manifest_File>
+        <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\ELI\eli_interface.h">

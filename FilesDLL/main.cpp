@@ -1,3 +1,20 @@
+/*!
+Copyright 2021 Maxim Noltmeer (m.noltmeer@gmail.com)
+
+	This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <vcl.h>
 #include <windows.h>
 
@@ -13,7 +30,7 @@ extern "C"
 {
 __declspec(dllexport) void __stdcall eIsFileExist(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
   wchar_t res[3];
 
   try
@@ -41,7 +58,7 @@ __declspec(dllexport) void __stdcall eIsFileExist(void *p)
 
 __declspec(dllexport) void __stdcall eCopyFile(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   wchar_t res[3];
 
@@ -76,7 +93,7 @@ __declspec(dllexport) void __stdcall eCopyFile(void *p)
 
 __declspec(dllexport) void __stdcall eDeleteFile(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   wchar_t res[3];
 
@@ -105,7 +122,7 @@ __declspec(dllexport) void __stdcall eDeleteFile(void *p)
 
 __declspec(dllexport) void __stdcall eReadTextFile(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   String res;
 
@@ -133,7 +150,7 @@ __declspec(dllexport) void __stdcall eReadTextFile(void *p)
 
 __declspec(dllexport) void __stdcall eWriteTextFile(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   String res;
 
@@ -176,7 +193,7 @@ __declspec(dllexport) void __stdcall eWriteTextFile(void *p)
 
 __declspec(dllexport) void __stdcall eFileSize(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   wchar_t res[3];
 
@@ -205,7 +222,7 @@ __declspec(dllexport) void __stdcall eFileSize(void *p)
 
 __declspec(dllexport) void __stdcall eCopyDir(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   wchar_t res[3];
 
@@ -241,7 +258,7 @@ __declspec(dllexport) void __stdcall eCopyDir(void *p)
 
 __declspec(dllexport) void __stdcall eClearDir(void *p)
 {
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
+  ELI_INTERFACE *ep = static_cast<ELI_INTERFACE*>(p);
 
   wchar_t res[3];
 
@@ -267,31 +284,10 @@ __declspec(dllexport) void __stdcall eClearDir(void *p)
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res);
 }
 //-------------------------------------------------------------------------------
-
-__declspec(dllexport) void __stdcall eReadBinFile(void *p)
-{
-  ELI_INTERFACE *ep = (ELI_INTERFACE*)p;
-
-  wchar_t res[3];
-
-  try
-	 {
-	   //int i = DeleteFile(ep->GetParamToStr(L"pFile"));
-	   swprintf(res, L"%d", 1);
-	 }
-  catch (Exception &e)
-	 {
-	   swprintf(res, L"%d", -1);
-	 }
-
-  ep->SetFunctionResult(ep->GetCurrentFuncName(), res);
-}
-//-------------------------------------------------------------------------------
-
 }
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void* lpReserved)
 {
-	return 1;
+  return 1;
 }
 
