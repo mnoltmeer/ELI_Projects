@@ -1,33 +1,42 @@
 ﻿#begin ELIShellEmulator;
 
-//Скрипт имитирует работу в консоли;
-//Вводимые команды будут интерпретированы в рантайм режиме;
-//Допустимы любые конструкции на языке ELI;
+//This script emulates work in the console;
+//Entered commands will be interpreted in runtime mode;
+//Any ELI constructs are acceptable;
 
 #procedure RunShell()
 {
-  $res = string;
+  $res = "";
 
-  while (_istreq($res, exit) != 1)
+  while (!_istreq($res, exit))
     {
-      $line = '';
+      $line = "";
 	  
       _writeout(#>);
       _readin($line);
 		
-      if (_istreq($line, exit) != 1)
+      if (!_istreq($line, exit))
         {  
           if (_run($line) == 0)
-            {_writeout(_lasterror()); _writeout(#endl); $res = exit;}
+            {
+			  _writeout(_lasterror());
+			  _writeout(#endl);
+			  
+			  $res = exit;
+			}
         }
       else
         {$res = $line;}
     }
 }
 
-_writeout('[ELI Shell Emulator copyright 2018 Maxim Noltmeer m.noltmeer@gmail.com]');
+_writeout("[ELI Shell Emulator copyright 2018-2025 Maxim Noltmeer m.noltmeer@gmail.com]");
 _writeout(#endl);
-_writeout('Type "exit" to end script');
+_writeout("Entered commands will be interpreted in runtime mode");
+_writeout(#endl);
+_writeout("Any ELI constructs are acceptable");
+_writeout(#endl);
+_writeout("Type "exit" to end work");
 _writeout(#endl);
 _writeout(#endl);
 
