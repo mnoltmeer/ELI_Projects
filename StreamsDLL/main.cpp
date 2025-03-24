@@ -50,6 +50,7 @@ eliStreamHandle *FindStream(unsigned int handle)
 			if (vecStreams[i].Handle == handle)
 			  {
 				res = &vecStreams[i];
+
 				break;
 			  }
 		  }
@@ -57,6 +58,7 @@ eliStreamHandle *FindStream(unsigned int handle)
   catch (Exception &e)
 	 {
 	   SaveLogToUserFolder("eliStream.log", "ELI", "FindStream: " + e.ToString());
+
 	   res = NULL;
 	 }
 
@@ -82,6 +84,7 @@ eliStreamHandle *AddMemoryStream()
   catch (Exception &e)
 	 {
 	   SaveLogToUserFolder("eliStream.log", "ELI", "AddMemoryStream: " + e.ToString());
+
 	   res = NULL;
 	 }
 
@@ -101,7 +104,9 @@ bool RemoveStream(unsigned int handle)
 			  {
 				delete vecStreams[i].Stream;
 				vecStreams.erase(vecStreams.begin() + i);
+
 				res = true;
+
                 break;
 			  }
 		  }
@@ -109,6 +114,7 @@ bool RemoveStream(unsigned int handle)
   catch (Exception &e)
 	 {
 	   SaveLogToUserFolder("eliStream.log", "ELI", "RemoveStream: " + e.ToString());
+
        res = false;
 	 }
 
@@ -153,8 +159,9 @@ __declspec(dllexport) void __stdcall eGetSize(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = -1;
 	   ep->AddToLog(String("eliStreams::eGetSize: " + e.ToString()).c_str());
+
+       res = -1;
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), String(res).c_str());
@@ -180,8 +187,9 @@ __declspec(dllexport) void __stdcall eGetPos(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = -1;
 	   ep->AddToLog(String("eliStreams::eGetPos: " + e.ToString()).c_str());
+
+       res = -1;
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), String(res).c_str());
@@ -204,6 +212,7 @@ __declspec(dllexport) void __stdcall eSetPos(void *p)
 	   if (stream)
 		 {
 		   stream->Stream->Position = pos;
+
 		   res = "1";
          }
 	   else
@@ -211,8 +220,9 @@ __declspec(dllexport) void __stdcall eSetPos(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = "0";
 	   ep->AddToLog(String("eliStreams::eSetPos: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -241,6 +251,7 @@ __declspec(dllexport) void __stdcall eReadSym(void *p)
 		   try
 			  {
 				stream->Stream->Read(buf, sz);
+
 				res = buf;
 
 				if (res == "")
@@ -253,8 +264,9 @@ __declspec(dllexport) void __stdcall eReadSym(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = "-err-";
 	   ep->AddToLog(String("eliStreams::eReadSym: " + e.ToString()).c_str());
+
+       res = "-err-";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -276,14 +288,7 @@ __declspec(dllexport) void __stdcall eWriteSym(void *p)
 
 	   if (stream)
 		 {
-		   unsigned long sz = data.Length() *  sizeof(wchar_t) + 1;
-		   wchar_t *buf = new wchar_t[sz];
-
-		   try
-			  {
-				stream->Stream->Write(buf, sz);
-			  }
-		   __finally {delete[] buf;}
+		   stream->Stream->Write(data.c_str(), data.Length() * sizeof(wchar_t));
 
 		   res = "1";
          }
@@ -292,8 +297,9 @@ __declspec(dllexport) void __stdcall eWriteSym(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eWriteSym: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -309,19 +315,19 @@ __declspec(dllexport) void __stdcall eReadNum(void *p)
   try
 	 {
 	   unsigned int handle = ep->GetParamToInt(L"pHandle");
-	   unsigned int cnt = ep->GetParamToInt(L"pCount");
 
 	   eliStreamHandle *stream = FindStream(handle);
 
 	   if (stream)
-		 stream->Stream->Read(&res, cnt);
+		 stream->Stream->Read(&res, sizeof(float));
 	   else
 		 res = 0;
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eReadNum: " + e.ToString()).c_str());
+
+       res = 0;
 	 }
 
   char buf[8];
@@ -348,6 +354,7 @@ __declspec(dllexport) void __stdcall eWriteNum(void *p)
 	   if (stream)
 		 {
 		   stream->Stream->Write(&data, sizeof(int));
+
 		   res = "1";
 		 }
 	   else
@@ -355,8 +362,9 @@ __declspec(dllexport) void __stdcall eWriteNum(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = "0";
-	   ep->AddToLog(String("eliStreams::eWriteNum: " + e.ToString()).c_str());
+       ep->AddToLog(String("eliStreams::eWriteNum: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -377,15 +385,17 @@ __declspec(dllexport) void __stdcall eStreamLoadFromFile(void *p)
 	   eliStreamHandle *stream = FindStream(handle);
 
        if (!stream)
-		 throw new Exception("Target Stream not found");
+		 throw Exception("Target Stream not found");
 
 	   stream->Stream->LoadFromFile(file);
+
 	   res = "1";
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eStreamLoadFromFile: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -417,8 +427,9 @@ __declspec(dllexport) void __stdcall eStreamLoadFromStream(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eStreamLoadFromStream: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -439,15 +450,16 @@ __declspec(dllexport) void __stdcall eStreamSaveToFile(void *p)
 	   eliStreamHandle *stream = FindStream(handle);
 
        if (!stream)
-		 throw new Exception("Target Stream not found");
+		 throw Exception("Target Stream not found");
 
 	   stream->Stream->SaveToFile(file);
 	   res = "1";
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eStreamSaveToFile: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -469,18 +481,19 @@ __declspec(dllexport) void __stdcall eStreamSaveToStream(void *p)
 	   eliStreamHandle *stream = FindStream(handle);
 
 	   if (!target_stream)
-		 throw new Exception("Source Stream not found");
+		 throw Exception("Source Stream not found");
 
 	   if (!stream)
-		 throw new Exception("Target Stream not found");
+		 throw Exception("Target Stream not found");
 
 	   stream->Stream->SaveToStream(target_stream->Stream);
 	   res = "1";
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eStreamSaveToStream: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -500,15 +513,16 @@ __declspec(dllexport) void __stdcall eClearStream(void *p)
 	   eliStreamHandle *stream = FindStream(handle);
 
 	   if (!stream)
-		 throw new Exception("Stream not found");
+		 throw Exception("Stream not found");
 
 	   stream->Stream->Clear();
 	   res = "1";
 	 }
   catch (Exception &e)
 	 {
-	   res = "";
 	   ep->AddToLog(String("eliStreams::eClearStream: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
@@ -532,8 +546,9 @@ __declspec(dllexport) void __stdcall eCreateStream(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = 0;
 	   ep->AddToLog(String("eliStreams::eCreateStream: " + e.ToString()).c_str());
+
+       res = 0;
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), String(res).c_str());
@@ -557,8 +572,9 @@ __declspec(dllexport) void __stdcall eDeleteStream(void *p)
 	 }
   catch (Exception &e)
 	 {
-	   res = "0";
 	   ep->AddToLog(String("eliStreams::eDeleteStream: " + e.ToString()).c_str());
+
+       res = "0";
 	 }
 
   ep->SetFunctionResult(ep->GetCurrentFuncName(), res.c_str());
