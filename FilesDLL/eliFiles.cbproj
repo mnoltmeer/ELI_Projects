@@ -154,8 +154,12 @@
         <CppCompile Include="main.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\..\work-functions\MyFunc.cpp">
-            <DependentOn>..\..\work-functions\MyFunc.h</DependentOn>
+        <CppCompile Include="..\..\work-functions\FilesDirs.cpp">
+            <DependentOn>..\..\work-functions\FilesDirs.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\..\work-functions\Logs.cpp">
+            <DependentOn>..\..\work-functions\Logs.h</DependentOn>
             <BuildOrder>4</BuildOrder>
         </CppCompile>
         <BuildConfiguration Include="Base">
@@ -247,6 +251,12 @@
                 </DeployFile>
                 <DeployFile LocalName=".\Win32\Debug\eliFiles.dll" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win32\Release\eliFiles.dll" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName=".\Win32\Release\eliFiles.dll" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>eliFiles.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">
                         <Operation>1</Operation>

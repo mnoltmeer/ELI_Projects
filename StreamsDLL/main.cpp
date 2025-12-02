@@ -17,14 +17,13 @@ Copyright 2021 Maxim Noltmeer (m.noltmeer@gmail.com)
 
 #include <vcl.h>
 #include <windows.h>
+#include <vector>
 
 #pragma hdrstop
 #pragma argsused
 
-#include "..\..\work-functions\MyFunc.h"
+#include "..\..\work-functions\Logs.h"
 #include "..\..\ELI\eli_interface.h"
-
-extern String UsedAppLogDir;
 
 unsigned int CurrentHandle;
 
@@ -593,8 +592,6 @@ void WINAPI EntryPoint(unsigned long reason)
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void* lpReserved)
 {
-  UsedAppLogDir = "ELI";
-
   EntryPoint(reason);
 
   return 1;

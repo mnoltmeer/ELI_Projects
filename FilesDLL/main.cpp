@@ -21,7 +21,7 @@ Copyright 2021 Maxim Noltmeer (m.noltmeer@gmail.com)
 #pragma hdrstop
 #pragma argsused
 
-#include "..\..\work-functions\MyFunc.h"
+#include "..\..\work-functions\FilesDirs.h"
 #include "..\..\ELI\eli_interface.h"
 
 String initdir;
